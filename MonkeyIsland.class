@@ -1,17 +1,17 @@
 public class MonkeyIsland{
 
     public static Integer maxBananas(Map<Integer, List<Integer>> bananas){
-        Integer columnSize = bananas.keySet().size();
-        Integer lineSize = bananas.get(0).size();
+        Integer lineSize = bananas.keySet().size();
+        Integer columnSize = bananas.get(0).size();
         Integer totalBananas = 0;
         Integer lastLine = 0;
-        for(Integer line = 0; line < lineSize; line++){
+        for(Integer column = 0; column < columnSize; column++){
             Integer maxNumber = 0;
-            for(Integer column = 0; column < columnSize; column++){
-                if(maxNumber < bananas.get(column).get(line)){
-                    if(lastLine == column || lastLine == column + 1 || lastLine == column - 1){
-                        maxNumber = bananas.get(column).get(line);
-                        lastLine = column;
+            for(Integer line = 0; line < lineSize; line++){
+                if(maxNumber < bananas.get(line).get(column)){
+                    if(column == 0 || lastLine == line || lastLine == line + 1 || lastLine == line - 1){
+                        maxNumber = bananas.get(line).get(column);
+                        lastLine = line;
                     }
                 }
             }
