@@ -1,22 +1,57 @@
 public class MonkeyIsland{
+    public Integer columnSize;
+    public Integer lineSize;
+    public Integer [][] island;
+    public Integer [][] maxSum;
+    public Integer [][] visited;
+    public Integer sumPath = 0;
+    public Integer totalSum = 0;
 
-    public static Integer maxBananas(Map<Integer, List<Integer>> bananas){
-        Integer lineSize = bananas.keySet().size();
-        Integer columnSize = bananas.get(0).size();
-        Integer totalBananas = 0;
-        Integer lastLine = 0;
-        for(Integer column = 0; column < columnSize; column++){
-            Integer maxNumber = 0;
-            for(Integer line = 0; line < lineSize; line++){
-                if(maxNumber < bananas.get(line).get(column)){
-                    if(column == 0 || lastLine == line || lastLine == line + 1 || lastLine == line - 1){
-                        maxNumber = bananas.get(line).get(column);
-                        lastLine = line;
-                    }
-                }
+    public MonkeyIsland(Integer[][] island){
+        this.island = island;
+        lineSize = island.size();
+        columnSize = island.get(0).size();
+        maxSum = new List<List<Integer>>();
+        visited = new List<List<Integer>>();
+        for(Integer i = 0; i < lineSize; i++){
+            maxSum.add(new List<Integer>());
+            visited.add(new List<Integer>());
+            for(Integer j = 0; j < columnSize; j++){
+                maxSum[i].add(0);
+                visited[i].add(0);
             }
-            totalBananas += maxNumber;
         }
-        return totalBananas;
+    }
+
+    public Integer sumMaxPath(Integer i, Integer j){
+        system.debug('Looking line: ' + i + ' and column: ' + j);
+        if (i == lineSize - 1 && j == columnSize - 1)
+            return island[i][j];
+
+        if (visited.get(i) != null && visited.get(i).get(j) != 0)
+            return maxSum.get(i).get(j);
+    
+        visited[i][j] = 1;
+    
+        Integer totalSum = 0;
+        if (i < lineSize - 1 && j < columnSize - 1){
+            Integer thisSum = Math.max(
+                                sumMaxPath(i, j + 1),
+                                i > 0? Math.max(sumMaxPath(i + 1, j + 1), sumMaxPath(i - 1, j + 1)) : sumMaxPath(i + 1, j + 1)
+                              );
+            system.debug('Current number: '+island[i][j]);
+            totalSum = island[i][j] + thisSum;
+        }
+        else if (i == lineSize - 1){
+            system.debug('Current number: '+island[i][j]);
+            totalSum = island[i][j] + Math.max(sumMaxPath(i, j + 1), sumMaxPath(i - 1, j + 1));
+        }
+        else{
+            system.debug('Current number: '+island[i][j]);
+            totalSum = island[i][j];
+        }
+        maxSum[i][j] = totalSum;
+    
+        return totalSum;
     }
 }
